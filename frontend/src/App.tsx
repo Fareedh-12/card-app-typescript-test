@@ -12,12 +12,14 @@ export default function App() {
       <Router>
         <DarkModeProvider>
           <EntryProvider>
-            <NavBar></NavBar>
-            <Routes>
-              <Route path="/" element={<AllEntries />}></Route>
-              <Route path="create" element={<NewEntry />}></Route>
-              <Route path="edit/:id" element={<EditEntry />}></Route>
-            </Routes>
+            <div className="bg-white dark:bg-gray-900 min-h-screen">
+              <NavBar></NavBar>
+              <Routes>
+                <Route path="/" element={<AllEntries />}></Route>
+                <Route path="create" element={<NewEntry />}></Route>
+                <Route path="edit/:id" element={<EditEntry />}></Route>
+              </Routes>
+            </div>
           </EntryProvider>
         </DarkModeProvider>
       </Router>
