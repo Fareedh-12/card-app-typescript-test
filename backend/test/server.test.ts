@@ -1,5 +1,5 @@
 import request from "supertest";
-import Prisma from "../src/db"; // Prisma client
+import Prisma from "../src/db";
 import { server } from "../src/server";
 
 describe("Card API Routes", () => {
@@ -15,21 +15,18 @@ describe("Card API Routes", () => {
 
   // Clear the database between tests to ensure no data conflict
   beforeEach(async () => {
-    await Prisma.entry.deleteMany(); // Clear all entries before each test
+    await Prisma.entry.deleteMany();
   });
 
   // Test creating a new card
   it("should create a new card", async () => {
-    const response = await request(server.server)
-      .post("/create/") // Keep trailing slash for /create
-      .send({
-        title: "Test Card",
-        description: "Test description for the card",
-        created_at: new Date(),
-        scheduled_date: new Date(),
-      });
+    const response = await request(server.server).post("/create/").send({
+      title: "Test Card",
+      description: "Test description for the card",
+      created_at: new Date(),
+      scheduled_date: new Date(),
+    });
 
-    console.log(response.body); // Add this line to debug if needed
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty("id");
     expect(response.body.title).toBe("Test Card");
@@ -38,7 +35,6 @@ describe("Card API Routes", () => {
 
   // Test fetching all cards (should include the one created earlier)
   it("should fetch all cards", async () => {
-    // Create a test card
     await Prisma.entry.create({
       data: {
         title: "Test Card",
@@ -49,7 +45,7 @@ describe("Card API Routes", () => {
     });
 
     // Fetch all cards
-    const response = await request(server.server).get("/get/"); // Keep trailing slash for /get
+    const response = await request(server.server).get("/get/");
     expect(response.statusCode).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBe(1); // Should have 1 entry
@@ -68,14 +64,12 @@ describe("Card API Routes", () => {
     });
 
     // Update the card
-    const response = await request(server.server)
-      .put(`/update/${card.id}`) // Remove trailing slash
-      .send({
-        title: "Updated Title",
-        description: "Updated description",
-        created_at: card.created_at,
-        scheduled_date: card.scheduled_date,
-      });
+    const response = await request(server.server).put(`/update/${card.id}`).send({
+      title: "Updated Title",
+      description: "Updated description",
+      created_at: card.created_at,
+      scheduled_date: card.scheduled_date,
+    });
 
     expect(response.statusCode).toBe(200);
     const updatedCard = await Prisma.entry.findUnique({ where: { id: card.id } });
@@ -96,7 +90,7 @@ describe("Card API Routes", () => {
     });
 
     // Delete the card
-    const response = await request(server.server).delete(`/delete/${card.id}`); // Remove trailing slash
+    const response = await request(server.server).delete(`/delete/${card.id}`);
     expect(response.statusCode).toBe(200);
 
     // Ensure it's deleted
