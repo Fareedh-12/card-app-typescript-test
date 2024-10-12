@@ -1,12 +1,8 @@
-import { useState } from "react";
-import { FaMoon, FaSun } from "react-icons/fa"; // Import sun and moon icons
+import { FaMoon, FaSun } from "react-icons/fa";
+import { useDarkMode } from "../utilities/globalContext"; // Use the DarkModeContext
 
 export default function LightDarkModeSwitch() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   return (
     <div className="flex items-center justify-center">
@@ -18,7 +14,9 @@ export default function LightDarkModeSwitch() {
         <div
           className={`absolute w-8 h-8 rounded-full transition-transform duration-300 
                     ${isDarkMode ? "translate-x-10 bg-gray-800" : "translate-x-0 bg-yellow-500"}`} // Switch position
-        ></div>
+        >
+          {/* {isDarkMode ? <FaMoon className="text-white" /> : <FaSun className="text-white" />} */}
+        </div>
       </div>
     </div>
   );
